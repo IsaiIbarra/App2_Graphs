@@ -14,6 +14,7 @@ import {
   CRow,
   CCol,
   CSpinner,
+  CFormInput,
 } from '@coreui/react';
 import { CSmartTable } from '@coreui/react-pro';
 
@@ -42,15 +43,16 @@ function App() {
       filter: false,
     },
     {
-      key: 'distance_dis',
-      label: 'Distance',
+      key: 'distances',
+      label: 'Distance in Km',
       sorter: false,
       filter: false,
+      _props: { colSpan: 2 },
     },
   ];
 
   //columns of table restaurants
-  const columns = [
+  const columnsTRestaurants = [
     {
       key: 'id_res',
       label: 'ID Restaurant',
@@ -132,7 +134,7 @@ function App() {
                     setShowModalDistances(true);
                     getRestaurantDistances(item.id_res);
                   }}
-                  columns={columns}
+                  columns={columnsTRestaurants}
                   columnSorter
                   items={restaurants}
                   itemsPerPageSelect
@@ -166,7 +168,55 @@ function App() {
           <CModalHeader>
             <CModalTitle>Distance to each restaurants</CModalTitle>
           </CModalHeader>
-          <CModalBody className='text-center'></CModalBody>
+          <CModalBody className='text-center'>
+            {/* For show loader of table distances */}
+            {loadingDistances ? (
+              <CRow className='my-3'>
+                <CCol sm={12} className='d-flex justify-content-center'>
+                  <CSpinner color='primary' />
+                </CCol>
+              </CRow>
+            ) : (
+              <CSmartTable
+                activePage={1}
+                columns={columnsTDistances}
+                columnSorter
+                items={distances}
+                itemsPerPageSelect
+                itemsPerPage={5}
+                pagination
+                tableFilter={false}
+                cleaner={false}
+                tableHeadProps={{
+                  color: 'primary',
+                }}
+                scopedColumns={{
+                  distances: (item) => {
+                    return (
+                      <td className='text-center border-0 '>
+                        <CFormInput
+                          type='number'
+                          color='secondary'
+                          shape='square'
+                          size='sm'
+                          title='Ver foto'
+                          value={item.distance_dis}
+                          placeholder={item.distance_dis}
+                          onChange={() => {}}
+                        />
+                      </td>
+                    );
+                  },
+                }}
+                tableProps={{
+                  striped: true,
+                  hover: true,
+                  responsive: true,
+                  bordered: true,
+                }}
+              />
+            )}
+          </CModalBody>
           <CModalFooter>
             <CButton
               color='secondary'
