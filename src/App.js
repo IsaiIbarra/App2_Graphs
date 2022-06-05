@@ -96,7 +96,7 @@ function App() {
 
   //API for get all restaurants
   const getRestaurants = () => {
-    fetch(`http://localhost:5000/`, {
+    fetch(`http://localhost:5000/getRestaurants`, {
       method: 'GET',
     })
       .then((resp) => resp.json())
